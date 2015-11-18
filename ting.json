@@ -213,6 +213,65 @@
         }
       }
     },
+    "/cug" : {
+      "get" : {
+        "summary" : "List of all Closed user groups for given reseller",
+        "description" : "Listing all user groups for reseller and contract combination",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "reseller",
+          "in" : "query",
+          "description" : "Reseller username from XOMS system",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "contract_id",
+          "in" : "query",
+          "description" : "Contract ID from XOMS system",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of all Closed User Groups",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CUG"
+              }
+            }
+          },
+          "404" : {
+            "description" : "No CUG could be found for this reseller & contract ID combination"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Adding new CUG",
+        "description" : "Adding new CUG for reseller and contract_id combination",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "cug_insert",
+          "in" : "body",
+          "description" : "CUG details to be added",
+          "required" : true,
+          "type" : {
+            "$ref" : "#definitions/CUG"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Details of inserted CUG",
+            "schema" : {
+              "$ref" : "#definitions/CUG"
+            }
+          }
+        }
+      }
+    },
     "/shortcodes" : {
       "get" : {
         "summary" : "List of shortcodes",
@@ -979,6 +1038,44 @@
         "sent" : {
           "type" : "integer",
           "description" : "sent=1 email is sent<br/>sent=0 email is not sent"
+        }
+      }
+    },
+    "CUG" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "description" : "ID of the CUG"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Custom name of the CUG"
+        },
+        "reseller" : {
+          "type" : "string",
+          "description" : "reseller username from XOMS"
+        },
+        "contract_id" : {
+          "type" : "string",
+          "description" : "contract ID field from XOMS"
+        }
+      }
+    },
+    "CUGMember" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "description" : "Internal ID of group member"
+        },
+        "group_id" : {
+          "type" : "integer",
+          "description" : "ID of the group where number belongs to"
+        },
+        "number" : {
+          "type" : "string",
+          "description" : "Phone number - member of the group"
         }
       }
     },
