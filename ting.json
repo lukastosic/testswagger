@@ -258,16 +258,53 @@
           "in" : "body",
           "description" : "CUG details to be added",
           "required" : true,
-          "type" : {
-            "$ref" : "#definitions/CUG"
+          "schema" : {
+            "$ref" : "#/definitions/CUG"
           }
         } ],
         "responses" : {
           "200" : {
             "description" : "Details of inserted CUG",
             "schema" : {
-              "$ref" : "#definitions/CUG"
+              "$ref" : "#/definitions/CUG"
             }
+          },
+          "404" : {
+            "description" : "not found"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      }
+    },
+    "/cug/{id}" : {
+      "get" : {
+        "summary" : "Get CUG members",
+        "description" : "Getting members of CUG",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of CUG",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Good response",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CUGMember"
+              }
+            }
+          },
+          "404" : {
+            "description" : "cug id not found"
+          },
+          "500" : {
+            "description" : "internal server error"
           }
         }
       }
