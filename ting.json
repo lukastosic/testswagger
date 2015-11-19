@@ -1292,7 +1292,15 @@
         },
         "allow_incoming" : {
           "type" : "integer",
-          "description" : "1/0 - enabled/disabled allow incoming callse"
+          "description" : "1/0 - enabled/disabled allow incoming calls"
+        },
+        "allow_outgoing" : {
+          "type" : "integer",
+          "description" : "1/0 - enabled/disabled outbound calling"
+        },
+        "call_to_specific" : {
+          "type" : "integer",
+          "description" : "1/0 - enabled/disabled calling to specific numbers outside CUG"
         }
       }
     },
