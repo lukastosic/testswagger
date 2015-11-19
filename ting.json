@@ -331,14 +331,139 @@
           "200" : {
             "description" : "Update done",
             "schema" : {
-              "$ref" : "#/definition/CUG"
+              "$ref" : "#/definitions/CUG"
             }
           },
           "404" : {
-            "descrption" : "ID of CUG not found"
+            "description" : "not found"
           },
           "500" : {
-            "descritpion" : "Internal error"
+            "description" : "internal server error"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Add new MSISDN to the group",
+        "description" : "Add new MSISDN to the group (including \"+\" prefix)",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of CUG",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "name" : "cug_member",
+          "in" : "body",
+          "description" : "CUG member defition that will be added to the group",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/CUGMember"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful add of CUG member",
+            "schema" : {
+              "$ref" : "#/definitions/CUGMember"
+            }
+          },
+          "404" : {
+            "description" : "ID is not found"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete closed user goup",
+        "description" : "Deleting entire closed user group",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of CUG",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Deleted successfuly"
+          },
+          "404" : {
+            "description" : "ID of CUG not found"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/cug/{id}/{msisdn}" : {
+      "delete" : {
+        "summary" : "Delete single CUG member",
+        "description" : "Delete single CUG member. Provide MSISDN <b>without</b> starting \"+\" prefix",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of CUG",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "name" : "msisdn",
+          "in" : "path",
+          "description" : "MSISDN to be deleted (provide <b>without</b> \"+\" prefix)",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Deleted successfuly"
+          },
+          "404" : {
+            "description" : "ID of CUG not found"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/cug/settings" : {
+      "get" : {
+        "summary" : "Get list of all settings for all msisdns in the TING",
+        "description" : null,
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "reseller",
+          "in" : "query",
+          "description" : "Reseller username from XOMS system",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "contract_id",
+          "in" : "query",
+          "description" : "Contract ID from XOMS system",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of all Closed User Groups",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CUG"
+              }
+            }
+          },
+          "404" : {
+            "description" : "No CUG could be found for this reseller & contract ID combination"
+          },
+          "500" : {
+            "description" : "internal server error"
           }
         }
       }
@@ -1147,6 +1272,27 @@
         "number" : {
           "type" : "string",
           "description" : "Phone number - member of the group"
+        }
+      }
+    },
+    "CUGSettings" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "description" : "internal ID of settings"
+        },
+        "msisdn" : {
+          "type" : "string",
+          "description" : "phone number to which settings are applied"
+        },
+        "call_to_emergency" : {
+          "type" : "integer",
+          "description" : "1/0 - enabled/disabled calling to emergency numbers"
+        },
+        "allow_incoming" : {
+          "type" : "integer",
+          "description" : "1/0 - enabled/disabled allow incoming callse"
         }
       }
     },
