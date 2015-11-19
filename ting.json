@@ -307,6 +307,40 @@
             "description" : "internal server error"
           }
         }
+      },
+      "put" : {
+        "summary" : "Updating CUG details",
+        "description" : "Updating all CUG details",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "cug_update",
+          "in" : "body",
+          "description" : "Object to update existing CUG, ID in url path and ID of JSON body must match",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/CUG"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of CUG",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Update done",
+            "schema" : {
+              "$ref" : "#/definition/CUG"
+            }
+          },
+          "404" : {
+            "descrption" : "ID of CUG not found"
+          },
+          "500" : {
+            "descritpion" : "Internal error"
+          }
+        }
       }
     },
     "/shortcodes" : {
