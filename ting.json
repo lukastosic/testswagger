@@ -537,6 +537,7 @@
         "tags" : [ "CUG" ],
         "parameters" : [ {
           "name" : "msisdn",
+          "in" : "path",
           "required" : true,
           "description" : "msisdn for which to show specific outgoing numbers",
           "type" : "string"
@@ -565,11 +566,13 @@
         "tags" : [ "CUG" ],
         "parameters" : [ {
           "name" : "msisdn",
+          "in" : "path",
           "required" : true,
           "description" : "msisdn for which to add new specific outgoing number",
           "type" : "string"
         }, {
           "name" : "specific_definition",
+          "in" : "body",
           "required" : true,
           "description" : "specific destination defintion that will be added",
           "schema" : {
@@ -597,6 +600,7 @@
         "tags" : [ "CUG" ],
         "parameters" : [ {
           "name" : "msisdn",
+          "in" : "path",
           "required" : true,
           "description" : "msisdn for which to show specific outgoing numbers",
           "type" : "string"
@@ -621,11 +625,13 @@
         "tags" : [ "CUG" ],
         "parameters" : [ {
           "name" : "msisdn",
+          "in" : "path",
           "required" : true,
           "description" : "msisdn for which to show specific outgoing numbers",
           "type" : "string"
         }, {
           "name" : "id",
+          "in" : "path",
           "required" : true,
           "description" : "Internal ID of specific destination",
           "type" : "integer"
