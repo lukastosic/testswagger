@@ -434,28 +434,15 @@
     "/cug/settings" : {
       "get" : {
         "summary" : "Get list of all settings for all msisdns in the TING",
-        "description" : null,
+        "description" : "Get settings for all MSISDNs in TING.",
         "tags" : [ "CUG" ],
-        "parameters" : [ {
-          "name" : "reseller",
-          "in" : "query",
-          "description" : "Reseller username from XOMS system",
-          "required" : true,
-          "type" : "string"
-        }, {
-          "name" : "contract_id",
-          "in" : "query",
-          "description" : "Contract ID from XOMS system",
-          "required" : true,
-          "type" : "string"
-        } ],
         "responses" : {
           "200" : {
-            "description" : "List of all Closed User Groups",
+            "description" : "List of all CUG settings on MSISDNs",
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/CUG"
+                "$ref" : "#/definitions/CUGSettings"
               }
             }
           },
@@ -464,6 +451,188 @@
           },
           "500" : {
             "description" : "internal server error"
+          }
+        }
+      }
+    },
+    "/cug/settings/{msisdn}" : {
+      "get" : {
+        "summary" : "CUG settings for single MSISDN",
+        "description" : "All CUG settings for single MSISDN. MSISDN is provided <b>without</b> \"+\" sign before number",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "msisdn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "description" : "MSISDN is provided <b>without</b> \"+\" sign before number"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/CUGSettings"
+            }
+          },
+          "404" : {
+            "description" : "msisdn not found"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update CUG settings on single MSISDN",
+        "description" : "Update CUG settings on single MSISDN. MSISDN is provided <b>without</b> \"+\" sign before number.<br/> If there are no existing CUG settings on MSISDN, new entry will be created in DB.",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "msisdn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "description" : "MSISDN is provided <b>without</b> \"+\" sign before number"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/CUGSettings"
+            }
+          },
+          "404" : {
+            "description" : "msisdn not found"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      }
+    },
+    "/cug/specificoutgoing" : {
+      "get" : {
+        "summary" : "All specific outgoing numbers",
+        "description" : "Get entire list of mappings between TING numbers and outgoing numbers",
+        "tags" : [ "CUG" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CUGSpecificOutgoing"
+              }
+            }
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      }
+    },
+    "/cug/specificoutgoing/{msisdn}" : {
+      "get" : {
+        "summary" : "Show specific outgoing numbers defined on MSISDN",
+        "description" : "Show all allowed specific outgoing destination that are defined on single MSISDN",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "msisdn",
+          "required" : true,
+          "description" : "msisdn for which to show specific outgoing numbers",
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CUGSpecificOutgoing"
+              }
+            }
+          },
+          "404" : {
+            "description" : "There are no defined numbers for given msisdn"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Post new destination on given msisdn",
+        "description" : "Adding new specific outbound destination for given MSISDN",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "msisdn",
+          "required" : true,
+          "description" : "msisdn for which to add new specific outgoing number",
+          "type" : "string"
+        }, {
+          "name" : "specific_definition",
+          "required" : true,
+          "description" : "specific destination defintion that will be added",
+          "schema" : {
+            "$ref" : "#/definitions/CUGSpecificOutgoing"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/CUGSpecificOutgoing"
+            }
+          },
+          "404" : {
+            "description" : "MSISDN doesn't exist"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete all specific destinations on given MSISDN",
+        "description" : "Delete all specific destinations on given MSISDN",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "msisdn",
+          "required" : true,
+          "description" : "msisdn for which to show specific outgoing numbers",
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Deleted all destinations"
+          },
+          "404" : {
+            "description" : "MSISDN doesn't exist"
+          },
+          "500" : {
+            "description" : "internal server error"
+          }
+        }
+      }
+    },
+    "/cug/specificoutgoing/{msisdn}/{id}" : {
+      "delete" : {
+        "summary" : "Delete  specific destination on given MSISDN",
+        "description" : "Adding new specific outbound destination for given MSISDN",
+        "tags" : [ "CUG" ],
+        "parameters" : [ {
+          "name" : "msisdn",
+          "required" : true,
+          "description" : "msisdn for which to show specific outgoing numbers",
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "required" : true,
+          "description" : "Internal ID of specific destination",
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
           }
         }
       }
@@ -1301,6 +1470,23 @@
         "call_to_specific" : {
           "type" : "integer",
           "description" : "1/0 - enabled/disabled calling to specific numbers outside CUG"
+        }
+      }
+    },
+    "CUGSpecificOutgoing" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "description" : "internal ID"
+        },
+        "msisdn" : {
+          "type" : "string",
+          "description" : "phone number in TING"
+        },
+        "destination_number" : {
+          "type" : "string",
+          "description" : "allowed destination number"
         }
       }
     },
